@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guardian Ride</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
+</head>
+<body>
+    <h1>GUARDIAN RIDE</h1>
+    
+    <!-- ...existing code... -->
+<div id="container">
+    <!-- Video feed -->
+    <img id="videoElement" alt="Video Feed" />
+
+    <!-- Driver's name and State display box -->
+    <div id="driverInfo">
+        <div id="driverName"></div>
+        <button id="registerButton">Register Driver</button>
+        <div id="register-progress" style="font-weight:bold;"></div>
+        <div id="stateBox">
+            <h2>Driver State</h2>
+            <pre id="stateText"></pre> 
+        </div>
+    </div>
+</div>
+<!-- ...existing code... -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+</body>
+</html>

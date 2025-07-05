@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(45deg, #328f8a, #08ac4b); /* Background gradient */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: white;
+    align-self: center;
+    margin-top: 80px; /* Moved it down */
+    margin-left: 40px;
+}
+
+h2, #driverName {
+    color: white;
+    align-self: center;
+}
+
+/* Container for the layout */
+#container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%; /* Adjust the width as needed */
+    height: 80vh; /* Adjusted container height */
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Added margin at the bottom */
+}
+
+/* Style for the video element */
+#videoElement {
+    width: 50%; /* Take 60% of the container width */
+    height: auto; /* Maintain aspect ratio */
+    border: 5px solid white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-right: 250px;
+}
+
+/* Style for the driver name and state display box */
+#driverInfo {
+    width: 35%; /* Take 35% of the container width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#driverName {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style for the state display box */
+#stateBox {
+    width: 100%; /* Take full width */
+    height: 300px; /* Adjusted height */
+    overflow-y: scroll;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#stateText {
+    color: black; /* Changed to black for better readability */
+}
+#registerButton {
+background-color: white; /* Green background */
+color: black; /* White text color */
+padding: 14px 20px; /* Padding */
+margin: 8px 0; /* Margin */
+border: none; /* No border */
+cursor: pointer; /* Cursor pointer */
+width: 100%; /* Full width */
+border-radius: 10px; /* Rounded corners */
+font-size: 16px; /* Font size */
+transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
