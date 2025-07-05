@@ -21,7 +21,7 @@
    <b>-Pre-Registration:</b> <p> Before deployment, employers register all drivers within the system, ensuring accurate identification and eliminating cases where the KNN algorithm classifies unregistered output as one of the classes.</p> 
   <b> -Violation Tracking:</b> <p> If a driver commits a traffic violation, government-installed cameras capture the car's license plate and timestamp, leading to a fine. Subsequently, the employer or owner can identify the driver responsible for the infraction while driving the specific vehicle at that time, facilitating appropriate reprimand. </p>
 
-[Demo Video](https://drive.google.com/file/d/1-_10r70kMcPGrJFyN-KYD-PLY3VxL8kO/view?usp=drive_link)
+[Demo Video](https://drive.google.com/file/d/1V-uoC5xJaSCxFCnI9AZIyVQTp1n90zx6/view?usp=sharing)
 
 
 <h2>Installation and Setup</h2> 
