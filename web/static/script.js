@@ -64,9 +64,9 @@ function updateDriverName() {
         .then(res => res.json())
         .then(data => {
             if (data.driverName) {
-                driverNameBox.textContent = "Driver: " + data.driverName;
+                driverNameBox.textContent = "Driver's Name: " + data.driverName;
             } else {
-                driverNameBox.textContent = "Driver: Unknown";
+                driverNameBox.textContent = "Unknown Driver";
             }
         })
         .catch(err => {

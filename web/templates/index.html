@@ -4,13 +4,20 @@
     <title>Guardian Ride</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> 
 </head>
-<body>
+<body style="
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('{{ url_for('static', filename='background.jpg') }}') no-repeat center center fixed;
+    background-size: cover;
+">
+
     <h1>GUARDIAN RIDE</h1>
     
     <div id="container">
         <!-- Browser webcam feed -->
-        <video id="webcam" autoplay muted playsinline width="640" height="480"></video>
-        <canvas id="frameCanvas" width="640" height="480" style="display: none;"></canvas>
+         <div class="video-container">
+    <video id="webcam" autoplay muted playsinline></video>
+</div>
+<canvas id="frameCanvas" width="640" height="480" style="display: none;"></canvas>
 
         <div id="driverInfo">
             <div id="driverName"></div>
