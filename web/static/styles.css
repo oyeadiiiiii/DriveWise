@@ -17,11 +17,17 @@ h1 {
     margin-left: 40px;
 }
 
-h2, #driverName {
-    color: white;
+h2 {
+    color: black;
     align-self: center;
 }
 
+#driverName, #register-progress {
+    color: white;
+    align-self: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 /* Container for the layout */
 #container {
     display: flex;
