@@ -1,101 +1,119 @@
-// Remove direct webcam access from browser and use server video feed
+// Empty means "same origin as this page"
+const BACKEND_URL = "";
 
-const eventSource = new EventSource("/state_feed");
+const webcam = document.getElementById('webcam');
+const canvas = document.getElementById('frameCanvas');
+const ctx = canvas.getContext('2d');
+const stateText = document.getElementById("stateText");
+const registerButton = document.getElementById("registerButton");
+const registerProgress = document.getElementById("register-progress");
+const driverNameBox = document.getElementById("driverName");
 
-let prevState = ""; // Variable to store the previous state
+let prevState = "";
 
-function updateDriverName() {
-    fetch('/get_driver_name')
-    .then(response => response.json())
-    .then(data => {
-        const driverName = document.getElementById("driverName");
-        if (data.driverName) {
-            driverName.textContent = "Driver's Name: " + data.driverName;
-        } else {
-            driverName.textContent = "Driver's Name: Unknown";
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching driver name:', error);
-    });
+// Start webcam
+async function startWebcam() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        webcam.srcObject = stream;
+        webcam.style.display = 'block';
+        captureAndSendFrame();
+    } catch (err) {
+        alert('Could not access webcam: ' + err);
+    }
 }
 
-// Automatically poll for driver name every 5 seconds
-setInterval(updateDriverName, 5000);
+// Capture and send frames to backend
+function captureAndSendFrame() {
+    ctx.drawImage(webcam, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(async function(blob) {
+        if (blob) {
+            const formData = new FormData();
+            formData.append('frame', blob, 'frame.jpg');
+            try {
+                await fetch(`/upload_frame`, {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (e) {
+                console.error("Frame upload error:", e);
+            }
+        }
+        setTimeout(captureAndSendFrame, 200); // every 200ms
+    }, 'image/jpeg', 0.8);
+}
 
-// Initial update when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    updateDriverName();
-
-    // Set up video feed from server
-    const videoElement = document.getElementById('videoElement');
-    if (videoElement) {
-        videoElement.src = "/video_feed_act";
-        videoElement.autoplay = true;
-        videoElement.muted = true;
-        videoElement.playsInline = true;
-    }
-});
-
+// Listen for driver state from server
+const eventSource = new EventSource(`/state_feed`);
 eventSource.onmessage = function(event) {
-    const stateText = document.getElementById("stateText");
-    let newState = event.data.trim();
-
+    const newState = event.data.trim();
     if (newState !== prevState && newState !== "") {
         stateText.textContent += newState + "\n";
-        stateBox.scrollTop = stateBox.scrollHeight;
+        stateText.scrollTop = stateText.scrollHeight;
         prevState = newState;
     }
 };
-
-registerButton.addEventListener('click', () => {
-    const driverName = prompt("Please enter your name:", "");
-    if (driverName !== null && driverName !== "") {
-        document.getElementById('register-progress').innerText = "Starting registration...";
-        fetch('/register_driver', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name: driverName })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('register-progress').innerText = 
-                    `Registration complete!`;
-                updateDriverName();
-            } else {
-                document.getElementById('register-progress').innerText = 
-                    'Failed to register driver.';
-            }
-        })
-        .catch(error => {
-            document.getElementById('register-progress').innerText = 
-                'Error registering driver.';
-            console.error('Error registering driver:', error);
-        });
-
-        // Poll for progress every 0.5s
-        let interval = setInterval(() => {
-            fetch('/register_progress')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.clicks_left > 0) {
-                        document.getElementById('register-progress').innerText =
-                            `Images left: ${data.clicks_left} / 50`;
-                    } else {
-                        clearInterval(interval);
-                    }
-                });
-        }, 500);
-    }
-});
-
 eventSource.onerror = function(error) {
     console.error("EventSource failed:", error);
     eventSource.close();
 };
 
-// Remove browser-side webcam access code
-// The video feed is now provided by the server via <img> or <video> tag with src="/video_feed_act"
+// Update driver name from backend
+function updateDriverName() {
+    fetch(`/get_driver_name`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.driverName) {
+                driverNameBox.textContent = "Driver: " + data.driverName;
+            } else {
+                driverNameBox.textContent = "Driver: Unknown";
+            }
+        })
+        .catch(err => {
+            console.error("Driver name error:", err);
+        });
+}
+setInterval(updateDriverName, 5000); // refresh every 5s
+
+// Handle registration
+registerButton.addEventListener('click', () => {
+    const name = prompt("Enter your name:");
+    if (!name) return;
+
+    registerProgress.textContent = "Starting registration...";
+
+    fetch(`/register_driver`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            registerProgress.textContent = "Registration complete!";
+            updateDriverName();
+        } else {
+            registerProgress.textContent = "Failed to register driver.";
+        }
+    })
+    .catch(err => {
+        registerProgress.textContent = "Error during registration.";
+        console.error("Registration error:", err);
+    });
+
+    // Poll registration progress
+    const interval = setInterval(() => {
+        fetch(`/register_progress`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.clicks_left > 0) {
+                    registerProgress.textContent = `Images left: ${data.clicks_left} / 50`;
+                } else {
+                    clearInterval(interval);
+                }
+            });
+    }, 500);
+});
+
+// Start everything
+window.onload = startWebcam;

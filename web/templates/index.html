@@ -7,24 +7,22 @@
 <body>
     <h1>GUARDIAN RIDE</h1>
     
-    <!-- ...existing code... -->
-<div id="container">
-    <!-- Video feed -->
-    <img id="videoElement" alt="Video Feed" />
+    <div id="container">
+        <!-- Browser webcam feed -->
+        <video id="webcam" autoplay muted playsinline width="640" height="480"></video>
+        <canvas id="frameCanvas" width="640" height="480" style="display: none;"></canvas>
 
-    <!-- Driver's name and State display box -->
-    <div id="driverInfo">
-        <div id="driverName"></div>
-        <button id="registerButton">Register Driver</button>
-        <div id="register-progress" style="font-weight:bold;"></div>
-        <div id="stateBox">
-            <h2>Driver State</h2>
-            <pre id="stateText"></pre> 
+        <div id="driverInfo">
+            <div id="driverName"></div>
+            <button id="registerButton">Register Driver</button>
+            <div id="register-progress" style="font-weight:bold;"></div>
+            <div id="stateBox">
+                <h2>Driver State</h2>
+                <pre id="stateText"></pre> 
+            </div>
         </div>
     </div>
-</div>
-<!-- ...existing code... -->
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    
 </body>
 </html>

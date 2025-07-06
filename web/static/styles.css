@@ -41,7 +41,7 @@ h2 {
 }
 
 /* Style for the video element */
-#videoElement {
+#webcam, #frameCanvas{
     width: 50%; /* Take 60% of the container width */
     height: auto; /* Maintain aspect ratio */
     border: 5px solid white;
