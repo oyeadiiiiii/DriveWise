@@ -57,8 +57,7 @@ def facerecog(frame):
         model.fit(X, y)
 
         # Load Haar cascade
-        cascade_path = os.path.join(os.path.dirname(__file__), "haarcascade_frontalface_default.xml")
-        classifier = cv2.CascadeClassifier(cascade_path)
+        classifier = cv2.CascadeClassifier("web/haarcascade_frontalface_default.xml")
 
         predicted_name = None
 
