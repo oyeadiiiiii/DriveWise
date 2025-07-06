@@ -30,22 +30,22 @@ def register_driver(frame_getter, name, progress_callback=None):
     face_list = np.array(face_list)
     name_list = np.full((len(face_list), 1), name)
     total = np.hstack([name_list, face_list])
-    if os.path.exists("faces.npy"):
-        existing_data = np.load("faces.npy", allow_pickle=True)
+    if os.path.exists("web/faces.npy"):
+        existing_data = np.load("web/faces.npy", allow_pickle=True)
         data = np.vstack([existing_data, total])
     else:
         data = total
-    np.save("faces.npy", data)
+    np.save("web/faces.npy", data)
     return True
 
 def facerecog(frame):
     try:
         # Load the saved faces
-        if not os.path.exists("faces.npy"):
+        if not os.path.exists("web/faces.npy"):
             print("faces.npy not found")
             return None
         
-        data = np.load("faces.npy", allow_pickle=True)
+        data = np.load("web/faces.npy", allow_pickle=True)
         if data.size == 0:
             print("faces.npy is empty")
             return None
